@@ -1,7 +1,7 @@
 //Acuaña Salina Carlos Luis
-//Com 4
+//Com 2
 //Legajo: 121108/4
-//link de youtube: https://youtu.be/UZnqYbw4SZU 
+//link de youtube: https://youtu.be/ipZi7DW2ETA
 let cant;
 let tam;
 let anc;
@@ -144,3 +144,4 @@ function keyPressed() {
     mouseY=0;
   }
 }
+
