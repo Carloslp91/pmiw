@@ -2,7 +2,7 @@
 //Joaquin Montiel, legajo: 122802/5
 //Profesor: Matías Jauregui Lorda
 //Comisión 2
-//Youtube: 
+//Youtube: https://youtu.be/esLDYp2kn5Y
 
 
 let escenaActual = 0;
@@ -326,3 +326,4 @@ function dibujarBotonReiniciar() {
   textSize(25);
   text("Reiniciar", width / 2, 325);
 }
+
