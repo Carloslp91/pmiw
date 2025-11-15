@@ -2,45 +2,59 @@
 //Joaquin Montiel, legajo: 122802/5
 //Profesor: Matías Jauregui Lorda
 //Comisión 2
-//Youtube: https://youtu.be/esLDYp2kn5Y
-
+//Youtube: https:https://youtu.be/TFq_51DmI1Y
+//correcciones tp1
+//no funciona bien la camara, estoy en horarios de trabajo no puedo grabar nuevamente,disculpas.
 
 let escenaActual = 0;
 let IMAGENES = [];
 let song;
-let botonPlay = { x: 20, y: 20, w: 80, h: 40 };
-let botonStop = { x: 120, y: 20, w: 80, h: 40 };
+
+let botonPlayX = 20;
+let botonPlayY = 20;
+let botonPlayW = 80;
+let botonPlayH = 40;
+
+let botonStopX = 120;
+let botonStopY = 20;
+let botonStopW = 80;
+let botonStopH = 40;
+
+let posicionCreditosY; // Posición inicial de los créditos
+let speedCreditos = 0.5; // Velocidad de desplazamiento
 let LINEASDETEXTO = [
-  { linea1: "...", linea2: "..." },//pantalla de inicio
-  { linea1: "Una nave alien se encuentra sobre la tierra.", linea2: "Los soldados de freezer han llegado." },//primera pantalla
-  { linea1: "Estos soldados reunen las esferas del dragon", linea2: "Piensan revivir a freezer para vengarse de los Sayans" },//segunda pantalla
-  { linea1: "Shenglong aparece ante ellos y les concede un deseo", linea2: "EL DESEO: LA RESURRECCION DE FREEZER" },//tercera pantalla
-  { linea1: "Con freezer denuevo a la vida", linea2: "Y con una flota de soldados a su mando" },//cuarta pantalla
-  { linea1: "Los guerreros z deberan enfrentarlo", linea2: "Esta vez deberan ir con todo" },//quinta pantalla
-  { linea1: "Pero freezer ha estado entrenando", linea2: " ante todos muestra su nueva forma GOLDEN" },//sexta pantalla
-  { linea1: "Goku y Vegeta no se queda atras y muestran sus formas dios", linea2: "¿Quien sera el primero en pelear?" },//septima pantalla y desicion quien pelea
-  { linea1: "Goku y Freezer se lanzan a luchar", linea2: "Parece que esta parejo pero no es asi" },//octava pantalla
-  { linea1: "Con su nuevo poder Goku humilla a freezer", linea2: "decide dejarlo libre ya que no le causa problemas" },//novena pantalla
-  { linea1: "Aprovechando la oportunidad Freezer decide acabar con todos", linea2: "La tierra tiembla bajo sus pies y se agrieta" },//decima pantalla
-  { linea1: "Whis se percata de la situacion y decide actuar", linea2: "¿Aceptas su ayuda?" },//pantalla  1 y desicion de whis
-  { linea1: "Whis vuelve en el tiempo para salvarnos", linea2: "La tierra regresa a la normalidad " },// doceava pantalla, si le dijiste que si a whis
-  { linea1: "Debido a lo ocurrido Goku no puede titubear", linea2: "SE LANZA CONTRA FREEZER CON TODO" },// pantalla trece, aca ya no me acuerdo como se pronuncia
-  { linea1: "Utilizando un kamehameha devastador", linea2: "El emperador no puede aguantar" },//pantalla catorce
-  { linea1: "Freezer es eliminado", linea2: "La tierra ha sido salvada" },//pantalla 15
-  { linea1: "...", linea2: ".." },//pantalla 16
-  { linea1: "Vegeta se lanza contra freezer seguro de sí", linea2: "El principe parece tenerlo todo bajo control" },//pantalla 17 aca es si elegiste a vegeta
-  { linea1: "Vegeta domina el combate con facilidad", linea2: "Freezer esta humillado y a punto de ser derrotado." },//pantalla 18
-  { linea1: "Vegeta puede acabar con todo ahora pero quiere divertirse", linea2: "¿Que deberia hacer el principe Sayan?" },//pantalla 19 aca decidis si sos boludo o no
-  { linea1: "Vegeta decide acabar con todo lo antes posible", linea2: "Lanza un ataque tan poderoso para terminar todo" },// pantalla 19 elegiste bien
-  { linea1: "...", linea2: "..." },//pantalla 20
-  { linea1: "Goku y Vegeta deciden combatir a freezer juntos", linea2: "Freezer parece igualar la fuerza de ambos" },//pantalla 22 aca elegiste ambos
-  { linea1: "Goku y Vegeta caen ante golden freezer", linea2: "Su ultima esperanza es la fusion ¿Lo haran?" },// pantalla 23 aca decidis si te fusionas
-  { linea1: "Goku y Vegeta deciden fusionarse", linea2: "El poder que emanan supera a los dioses" },//pantalla 24 elegiste fusionarte
-  { linea1: "Ante freezer aparece el guerrero que lo detendra", linea2: "GOGETA" },// pantalla 25 nace gogeta
-  { linea1: "Gogeta arrasa con golden freezer", linea2: "su poder parece no tener lkimites" },//pantalla 26 gogeta hullia a freezer
-  { linea1: "Lanzando un ataque devastador", linea2: "Gogeta parece acabar con la vida del emperador" },//pantalla 27 gogeta mata a freezer
-  { linea1: "Debido al orgullo de Vegeta no se fusionan", linea2: "Golden freezer acab con ello y con todo el planeta" }//pantalla 28 no te quisiste fusionar
+  ["DRAGON BALL Z: LA RESURRECCIÓN DE FREEZER", "Pulsa COMENZAR para continuar"],//pantalla de inicio (Índice 0)
+  ["Una nave alien se encuentra sobre la tierra.", "Los soldados de Freezer han llegado."],//primera pantalla (Índice 1)
+  ["Estos soldados reunen las esferas del dragon", "Piensan revivir a Freezer para vengarse de los Sayans"],//segunda pantalla (Índice 2)
+  ["Shenglong aparece ante ellos y les concede un deseo", "EL DESEO: LA RESURRECCION DE FREEZER"],//tercera pantalla (Índice 3)
+  ["Con Freezer de nuevo a la vida", "Y con una flota de soldados a su mando"],//cuarta pantalla (Índice 4)
+  ["Los guerreros Z deberan enfrentarlo", "Esta vez deberan ir con todo"],//quinta pantalla (Índice 5)
+  ["Pero Freezer ha estado entrenando", " ante todos muestra su nueva forma GOLDEN"],//sexta pantalla (Índice 6)
+  ["Goku y Vegeta no se quedan atras y muestran sus formas Dios", "¿Quien sera el primero en pelear?"],//septima pantalla y desicion quien pelea (Índice 7)
+  ["Goku y Freezer se lanzan a luchar", "Parece que esta parejo pero no es asi"],//octava pantalla (Índice 8)
+  ["Con su nuevo poder Goku humilla a Freezer", "decide dejarlo libre ya que no le causa problemas"],//novena pantalla (Índice 9)
+  ["Aprovechando la oportunidad Freezer decide acabar con todos", "La tierra tiembla bajo sus pies y se agrieta"],//decima pantalla (Índice 10)
+  ["Whis se percata de la situacion y decide actuar", "¿Aceptas su ayuda?"],//pantalla 11 y desicion de whis (Índice 11)
+  ["Whis vuelve en el tiempo para salvarnos", "La tierra regresa a la normalidad "],// doceava pantalla, si le dijiste que si a whis (Índice 12)
+  ["Debido a lo ocurrido Goku no puede titubear", "SE LANZA CONTRA FREEZER CON TODO"],// pantalla trece (Índice 13)
+  ["Utilizando un kamehameha devastador", "El emperador no puede aguantar"],//pantalla catorce (Índice 14)
+  ["Freezer es eliminado", "La tierra ha sido salvada"],//pantalla 15 (Índice 15)
+  ["FIN", ".."],//pantalla 16 (FINAL GOKU)
+  ["Vegeta se lanza contra Freezer seguro de sí", "El principe parece tenerlo todo bajo control"],//pantalla 17 aca es si elegiste a vegeta (Índice 17)
+  ["Vegeta domina el combate con facilidad", "Freezer esta siendo humillado y a punto de ser derrotado."],//pantalla 18 (Índice 18)
+  ["Vegeta puede acabar con todo ahora pero quiere divertirse", "¿Que deberia hacer el principe Sayan?"],//pantalla 19 aca decidis si sos boludo o no (Índice 19)
+  ["Vegeta decide acabar con todo lo antes posible", "Lanza un ataque tan poderoso para terminar todo"],// pantalla 20 elegiste bien (Índice 20)
+  ["FIN: DERROTA POR TITUBEAR", "..."],//pantalla 21 (FINAL VEGETA MALO) (Índice 21)
+  ["Goku y Vegeta deciden combatir a Freezer juntos", "Freezer parece igualar la fuerza de ambos"],//pantalla 22 aca elegiste ambos (Índice 22)
+  ["Goku y Vegeta caen ante Golden Freezer", "Su ultima esperanza es la fusion ¿Lo haran?"],// pantalla 23 aca decidis si te fusionas (Índice 23)
+  ["Goku y Vegeta deciden fusionarse", "El poder que emanan supera a los dioses"],//pantalla 24 elegiste fusionarte (Índice 24)
+  ["Ante Freezer aparece el guerrero que lo detendra", "GOGETA"],// pantalla 25 nace gogeta (Índice 25)
+  ["Gogeta arrasa con Golden Freezer", "su poder parece no tener lkimites"],//pantalla 26 gogeta hullia a freezer (Índice 26)
+  ["Lanzando un ataque devastador", "Gogeta parece acabar con la vida del emperador"],//pantalla 27 gogeta mata a freezer (Índice 27)
+  ["FIN", "..."]//pantalla 28 no te quisiste fusionar (Índice 28)
 ];
+
+
 let creditos = [
   "Creado por: Carlos Acuña",
   "y Joaquin Montiel.",
@@ -53,53 +67,50 @@ let creditos = [
   "Fin y gracias por ver y interactuar"
 ];
 
-  let temp;
-  let j = 550; // Posición inicial de los créditos
-  let speed = 1; // Vel  ocidad de desplazamiento
-
-
 function preload() {
   for (let i = 1; i <= 29; i++) {
    IMAGENES[i - 1] = loadImage('data/DBimagen' + i + '.jpg');
   }
   song = loadSound('data/temaDB.mp3');
 }
+
 function setup() {
   createCanvas(640, 480);
   textAlign(CENTER, CENTER);
   textSize(24);
+  posicionCreditosY = height;
 }
 
 function draw() {
   background(0);
-  temp = int( millis() / 1000 );
   dibujarContenidoEscena(escenaActual);
   dibujarBotonesSong();
 }
 
 function mousePressed() {
-  pasarPantalla(escenaActual);
-   let sonidoPresionado = false;
-    if (mouseX > botonPlay.x && mouseX < botonPlay.x + botonPlay.w &&
-      mouseY > botonPlay.y && mouseY < botonPlay.y + botonPlay.h) {
+  // Manejo de botones de audio
+  if (mouseX > botonPlayX && mouseX < botonPlayX + botonPlayW &&
+      mouseY > botonPlayY && mouseY < botonPlayY + botonPlayH) {
     if (!song.isPlaying()) song.loop();
-    sonidoPresionado = true;
+    return;
   }
-    if (mouseX > botonStop.x && mouseX < botonStop.x + botonStop.w &&
-      mouseY > botonStop.y && mouseY < botonStop.y + botonStop.h) {
+    if (mouseX > botonStopX && mouseX < botonStopX + botonStopW &&
+      mouseY > botonStopY && mouseY < botonStopY + botonStopH) {
     if (song.isPlaying()) song.stop();
-    sonidoPresionado = true;
+    return;
   }
  
+  // Lógica de avance de pantalla
+  pasarPantalla(escenaActual);
 }
 
 function pasarPantalla(e) {
-  //boton siguiente
+  // botón de AVANCE (SIGUIENTE)
   let X_AVANCE = 550;
   let Y_AVANCE = 400;
   let ANCHO_ALTO_AVANCE = 80;
 
-  //botones de decisiones
+  // botones de DECISION
   let Y_DECISION = 420;
   let X_DECISION_1 = 150;
   let X_DECISION_2 = 300;
@@ -107,24 +118,36 @@ function pasarPantalla(e) {
   let ANCHO_DECISION = 130;
   let ALTO_DECISION = 40;
 
-  //boton reinicio
+  // botón REINICIO 
   let X_RESTART_START = width / 2 - 50;
   let Y_RESTART_START = 300;
   let X_RESTART_END = width / 2 + 50;  
   let Y_RESTART_END = 350;
-  if (e === 16 || e === 21) {
+
+ 
+  if (e === 16 || e === 21 || e === 28) {
     if (mouseX > X_RESTART_START && mouseY > Y_RESTART_START && mouseX < X_RESTART_END && mouseY < Y_RESTART_END) {
       escenaActual = 0;
+     
+      posicionCreditosY = height;
       return;
     }
+    // Si no presionó reiniciar, no hacemos nada más
+    return;
   }
+ 
+  // BOTÓN DE INICIO 
   if (e === 0) {
+    // Coordenadas del botón COMENZAR: x=207, y=349, w=222, h=45
     if (mouseX > 207 && mouseY > 349 && mouseX < 429 && mouseY < 394) {
       escenaActual = 1;
     }
+    return; // La escena 0 solo tiene el botón de inicio
   }
-  // decision 1 goku, vegeta o ambos
-  else if (e === 7) {
+ 
+  // BOTONES DE DECISIÓN 
+  // decision 1: goku, vegeta o ambos (Escena 7)
+  if (e === 7) {
       if (mouseX > X_DECISION_1 && mouseY > Y_DECISION && mouseX < X_DECISION_1 + ANCHO_DECISION && mouseY < Y_DECISION + ALTO_DECISION) {
           escenaActual = 8; // Goku
       } else if (mouseX > X_DECISION_2 && mouseY > Y_DECISION && mouseX < X_DECISION_2 + ANCHO_DECISION && mouseY < Y_DECISION + ALTO_DECISION) {
@@ -132,37 +155,43 @@ function pasarPantalla(e) {
       } else if (mouseX > X_DECISION_3 && mouseY > Y_DECISION && mouseX < X_DECISION_3 + ANCHO_DECISION && mouseY < Y_DECISION + ALTO_DECISION) {
           escenaActual = 22; // Ambos
       }
+    return;
   }
  
-  // Ddesicion 2 si o no a whis
+  // desicion 2: si o no a Whis (Escena 11)
   else if (e === 11) {
       if (mouseX > X_DECISION_1 && mouseY > Y_DECISION && mouseX < X_DECISION_1 + ANCHO_DECISION && mouseY < Y_DECISION + ALTO_DECISION) {
-          escenaActual = 12; // SI (Huye -> E13)
+          escenaActual = 12; // SI (Whis salva)
       } else if (mouseX > X_DECISION_2 && mouseY > Y_DECISION && mouseX < X_DECISION_2 + ANCHO_DECISION && mouseY < Y_DECISION + ALTO_DECISION) {
-          escenaActual = 21; // NO (No huye -> Final 21)
+          escenaActual = 21; // NO (Mala elección, final 21)
       }
+    return;
   }
 
-  // desicion 3 destruir o alardear
+  // desicion 3: destruir o alardear (Escena 19)
   else if (e === 19) {
       if (mouseX > X_DECISION_1 && mouseY > Y_DECISION && mouseX < X_DECISION_1 + ANCHO_DECISION && mouseY < Y_DECISION + ALTO_DECISION) {
-          escenaActual = 20; // Destruye
+          escenaActual = 20; // Destruye (Final Bueno)
       } else if (mouseX > X_DECISION_2 && mouseY > Y_DECISION && mouseX < X_DECISION_2 + ANCHO_DECISION && mouseY < Y_DECISION + ALTO_DECISION) {
-          escenaActual = 10; // Alardea
+          escenaActual = 10; // Alardea (Sale mal, lleva a escena 10, la misma de Goku)
       }
+    return;
   }
  
-  // desicion 4 fusionarse si o no
+  // desicion 4: fusionarse si o no (Escena 23)
   else if (e === 23) {
       if (mouseX > X_DECISION_1 && mouseY > Y_DECISION && mouseX < X_DECISION_1 + ANCHO_DECISION && mouseY < Y_DECISION + ALTO_DECISION) {
-          escenaActual = 24; // SI
+          escenaActual = 24; // SI (Gogeta)
       } else if (mouseX > X_DECISION_2 && mouseY > Y_DECISION && mouseX < X_DECISION_2 + ANCHO_DECISION && mouseY < Y_DECISION + ALTO_DECISION) {
-          escenaActual = 28; // NO
+          escenaActual = 28; // NO (Final malo 28)
       }
+    return;
   }
-
-  // seguir las pantallas
-  else if (mouseX > X_AVANCE && mouseY > Y_AVANCE && mouseX < X_AVANCE + ANCHO_ALTO_AVANCE && mouseY < Y_AVANCE + ANCHO_ALTO_AVANCE) {
+ 
+  // BOTÓN DE AVANCE 
+  // Si no fue una escena especial o de decisión, chequea el botón "SIGUIENTE"
+  if (mouseX > X_AVANCE && mouseY > Y_AVANCE && mouseX < X_AVANCE + ANCHO_ALTO_AVANCE && mouseY < Y_AVANCE + ANCHO_ALTO_AVANCE) {
+    // Escenas de avance lineal (hasta la decisión)
     if (e === 1) { escenaActual = 2; }
     else if (e === 2) { escenaActual = 3; }
     else if (e === 3) { escenaActual = 4; }
@@ -170,84 +199,106 @@ function pasarPantalla(e) {
     else if (e === 5) { escenaActual = 6; }
     else if (e === 6) { escenaActual = 7; }
    
-    // SI ELIJO A GOKU
+    // Rama GOKU
     else if (e === 8) { escenaActual = 9; }
     else if (e === 9) { escenaActual = 10; }
-    else if (e === 10) { escenaActual = 11; }
+    else if (e === 10) { escenaActual = 11; } // Lleva a la decisión de Whis
    
-    // SI LE DIGO QUE SI A WHIS
+    // Rama WHIS (SI)
     else if (e === 12) { escenaActual = 13; }
     else if (e === 13) { escenaActual = 14; }
     else if (e === 14) { escenaActual = 15; }
    
-    // SI ELIJO A VEGETA
+    // Rama VEGETA (Avance)
     else if (e === 17) { escenaActual = 18; }
-    else if (e === 18) { escenaActual = 19; }
-    else if (e === 20) { escenaActual = 15; }
-
-    // SI ELIJO A AMBOS
-    else if (e === 22) { escenaActual = 23; }
+    else if (e === 18) { escenaActual = 19; } // Lleva a la decisión de Vegeta
+    else if (e === 20) { escenaActual = 15; } // Vegeta Destruye -> Final 15
+   
+    // Rama AMBOS
+    else if (e === 22) { escenaActual = 23; } // Lleva a la decisión de Fusión
     else if (e === 24) { escenaActual = 25; }
     else if (e === 25) { escenaActual = 26; }
     else if (e === 26) { escenaActual = 27; }
    
-    // NO ME ACUERDO PERO CREO QUE ERA PARA MATAR A FREEZER
-    else if (e === 15) { escenaActual = 16; }
+    // ESCENA 15 (Final Bueno Común)
+    else if (e === 15) { escenaActual = 16; } // Final Bueno -> Créditos (16)
    
-    // SI ME FUSIONO EN GOGETA
-    else if (e === 27) { escenaActual = 15; }
-   
-    // SI NO ME FUSIONO EN GOGETA
-    else if (e === 28) { escenaActual = 21; }
+    // FIN de Rama GOGETA (27)
+    else if (e === 27) { escenaActual = 16; } // Gogeta -> Créditos (16)
   }
 }
+
 function dibujarBotonesSong() {
   textAlign(CENTER, CENTER);
   textSize(16);
   noStroke();
 
   fill(90, 200, 90);
-  rect(botonPlay.x, botonPlay.y, botonPlay.w, botonPlay.h, 10);
+  rect(botonPlayX, botonPlayY, botonPlayW, botonPlayH, 10);
   fill(255);
-  text("PLAY", botonPlay.x + botonPlay.w / 2, botonPlay.y + botonPlay.h / 2);
+  text("PLAY", botonPlayX + botonPlayW / 2, botonPlayY + botonPlayH / 2);
 
   fill(220, 60, 60);
-  rect(botonStop.x, botonStop.y, botonStop.w, botonStop.h, 10);
+  rect(botonStopX, botonStopY, botonStopW, botonStopH, 10);
   fill(255);
-  text("STOP", botonStop.x + botonStop.w / 2, botonStop.y + botonStop.h / 2);
+  text("STOP", botonStopX + botonStopW / 2, botonStopY + botonStopH / 2);
 }
 
 
 function dibujarEscenaHistoria(e) {
-  let indiceImagen = e;
-  if (IMAGENES[indiceImagen]) {
-    image(IMAGENES[indiceImagen], 46, 26, 547, 305);
+  let indiceImagen = e;  
+ 
+  // Dibuja la imagen de fondo si existe y no es una escena de 'Fin' 
+  if (e !== 16 && e !== 21 && e !== 28) {
+    if (IMAGENES[indiceImagen]) {
+      image(IMAGENES[indiceImagen], 46, 26, 547, 305);
+    } else {
+      background(50);
+    }
   } else {
-    background(50);
+    // Si es una escena de 'Fin', pinta la pantalla de negro para los créditos
+    background(0);
   }
-  stroke(3);// aca dibujamos donde van a ir los textos
+
+  // Dibuja el cuadro de texto
+  stroke(3);
   fill(150, 20, 80, 200);
   rect(0, 350, width, height - 350);
   fill(255);
   textSize(20);
-  if (e === 16 || e === 21) {
-     if (temp / 60 < 10) { // ACÁ EMPIEZAN LOS CRÉDITOS
+
+  // --- LÓGICA DE CRÉDITOS (Escenas 16, 21, 28) ---
+  if (e === 16 || e === 21 || e === 28) {
+     
     push();
-    // ACÁ DIBUJA LOS CRÉDITOS
+    // Mueve los créditos hacia arriba
+    posicionCreditosY -= speedCreditos;
+    // Dibuja los créditos (usa el array 'creditos')
     for (let i = 0; i < creditos.length; i++) {
       textAlign(CENTER);
       textSize(25);
       fill(255);
-      text(creditos[i], width / 2, j + i * 40);
-      j -= speed/5;} // VELOCIDAD + MUEVE LOS CRÉDITOS HACIA ARRIBA
-    pop();}
+      text(creditos[i], width / 2, posicionCreditosY + i * 40);
+    }
+    pop();
+
+    // Muestra el mensaje final (título) y el botón de Reiniciar
+    fill(255);
+    textSize(30);
+    // Acceso usando el índice 0 del array interno
+    let finalTitle = LINEASDETEXTO[e][0];
+    text(finalTitle, width / 2, height / 2 - 120);
+   
     dibujarBotonReiniciar();
     return;
   }
-  let data = LINEASDETEXTO[e]; // aca cargamos los textos del array
-  text(data.linea1, width / 2, 380);
-  text(data.linea2, width / 2, 410);
-//botones
+ 
+  // TEXTO NORMAL 
+  // Acceso usando los índices del array interno: [0] para la línea 1, [1] para la línea 2
+  text(LINEASDETEXTO[e][0], width / 2, 380);
+  text(LINEASDETEXTO[e][1], width / 2, 410);
+
+  // BOTONES DE DECISIÓN O AVANCE 
  if (e === 7) {
    dibujarBotonDecision(150, "Goku", 90, 170, 50);
    dibujarBotonDecision(300, "Vegeta", 90, 170, 50);
@@ -256,8 +307,8 @@ function dibujarEscenaHistoria(e) {
    dibujarBotonDecision(150, "SI", 90, 170, 50);
    dibujarBotonDecision(300, "NO", 170, 50, 50);
  } else if (e === 19) {
-   dibujarBotonDecision(150, "Destruye", 170, 50, 50);
-   dibujarBotonDecision(300, "Alardea", 90, 170, 50);
+   dibujarBotonDecision(150, "Destruir", 170, 50, 50);
+   dibujarBotonDecision(300, "Alardear", 90, 170, 50);
  } else if (e === 23) {
    dibujarBotonDecision(150, "SI", 90, 170, 50);
    dibujarBotonDecision(300, "NO", 170, 50, 50);
@@ -265,6 +316,7 @@ function dibujarEscenaHistoria(e) {
    dibujarBotonAvance("SIGUIENTE");
  }
 }
+
 function dibujarContenidoEscena(e) {
   if (e === 0) {
     dibujarPantallaInicio();
@@ -275,18 +327,32 @@ function dibujarContenidoEscena(e) {
 }
 
 function dibujarPantallaInicio() {
+  // Usamos IMAGENES[0] que contiene DBimagen1.jpg
   if (IMAGENES[0]) {
     image(IMAGENES[0], 0, 0, width, height);
   } else {
     background(255);
   }
+  // Dibuja el texto de inicio usando LINEASDETEXTO[0]
+  fill(0, 0, 0, 180); // Fondo semi-transparente para el texto
+  rect(0,0, width, 100);
+  fill(255);
+  textSize(24);
+  // Acceso usando el índice 0 del array interno
+  text(LINEASDETEXTO[0][0], width / 2, 35);
+  textSize(20);
+  // Acceso usando el índice 1 del array interno
+  text(LINEASDETEXTO[0][1], width / 2, 70);
+ 
+  // Dibuja el botón COMENZAR
   fill(90, 170, 50);
   rect(207, 349, 222, 45, 10);
   fill(255);
   textSize(30);
   text("COMENZAR", width / 2, 375);
-  j = 550;
-  speed = 1;
+ 
+  // Reinicia la posición de créditos solo en el menú principal
+  posicionCreditosY = height;
 }
 
 function dibujarBotonAvance(texto) {
@@ -294,8 +360,8 @@ function dibujarBotonAvance(texto) {
   let Y_AVANCE = 400;
   let ANCHO_ALTO_AVANCE = 80;
  
-  fill(255, 0, 0);
-  rect(X_AVANCE, Y_AVANCE, ANCHO_ALTO_AVANCE, ANCHO_ALTO_AVANCE);
+  fill(255, 0, 0, 200);  // Botón de avance 
+  rect(X_AVANCE, Y_AVANCE, ANCHO_ALTO_AVANCE, ANCHO_ALTO_AVANCE, 10);
   fill(255);
   textSize(16);
   text(texto, X_AVANCE + 40, Y_AVANCE + 40);
@@ -307,23 +373,20 @@ function dibujarBotonDecision(x, texto, r, g, b) {
   let ALTO_DECISION = 40;
  
   noStroke();
-  fill(r, g, b);
+  fill(r, g, b, 220); 
   rect(x, Y_DECISION, ANCHO_DECISION, ALTO_DECISION, 10);
   fill(255);
   textSize(20);
-  text(texto, x + ANCHO_DECISION / 2, Y_DECISION + ALTO_DECISION / 2 + 5);
+  text(texto, x + ANCHO_DECISION / 2, Y_DECISION + ALTO_DECISION / 2);  
 }
 
 function dibujarBotonReiniciar() {
-  fill(0, 0, 0, 150);
-  rect(0, 0, width, height);
-  fill(255);
-  textSize(20);
-  text("FIN GRACIAS POR VER", width / 2, height / 2 - 50);
-  fill(90, 170, 50);
-  rect(width / 2 - 50, 300, 100, 50);
+  // Se usa en las escenas finales (16, 21, 28)
+ 
+  // Dibuja el botón de Reiniciar
+  fill(90, 170, 50, 255);
+  rect(width / 2 - 50, 300, 100, 50, 10);
   fill(255);
   textSize(25);
   text("Reiniciar", width / 2, 325);
 }
-
